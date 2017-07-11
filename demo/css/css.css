@@ -1,0 +1,5 @@
+#app{width: 40%;border: 1px solid #ddd;min-height:500px;margin: 0 auto;margin-top: 100px;padding: 15px 25px;}
+.div_1 p .title{width: 100px;text-align: right;margin-right: 10px;display: inline-block}
+.btn{display: inline-block;padding: 3px 6px;background: #ddd;text-align: center;cursor: pointer;border-radius: 2px;}
+ul li{list-style: none;padding: 0;margin-top: 10px;}
+ul li span{display: inline-block;text-align: center;line-height: 30px;width: 21%;padding: 0 ;margin: 0;}

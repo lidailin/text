@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8"/>
+    <title></title>
+    <link rel="stylesheet" href="css/css_3.css"/>
+</head>
+<body>
+<div id="app">
+    <h3>购物车和地址选配功能</h3>
+    <ul class="cont_ul" v-for="(item,index) in productList">
+        <li class="li_2">
+            <div class="tit">
+                <span class="d1">商品信息</span>
+                <span class="d2">单价（元）</span>
+                <span class="d3">数量</span>
+                <span class="d4">实付款（元）</span>
+                <span class="d5"></span>
+            </div>
+            <p class="p1">
+                <font class="span_2" :class="{'mycheck':item.isCheck}" @click="dianjiCheck(item);allmoney(item)"></font>
+                <img src="images/img_1.jpg" alt=""/>
+                <span>{{item.name+index}}</span>
+            </p>
+            <p class="p2">{{item.price | forMoney}}</p>
+            <p class="p3">
+                <a href="javascript:void(0)" @click="change(item,-1)">-</a>
+                <input type="text" value="0" v-model="item.nub" disabled/>
+                <a href="javascript:void(0)" @click="change(item,1)">+</a>
+            </p>
+            <p class="p4">
+                <span>{{item.nub*item.price | money("元")}}</span>
+            </p>
+            <p class="p5">
+                <span>删除</span>
+            </p>
+        </li>
+    </ul>
+    <p class="all">
+        <span class="span_1" :class="{'allCheck':allData}" @click="quanxuan()"></span>
+        <span>全选</span>
+        <a href="javascript:void(0)" class="ctrlz">取消全选</a>
+        <span class="allMoney">总价：{{allMoney | money("元")}}</span>
+    </p>
+    <first v-for="item in productList" :todo="item"></first>
+</div>
+</body>
+<script src="js/vue.js"></script>
+<script src="js/vue-resource.min.js"></script>
+<script>
+    Vue.component("first",{
+        props:['todo'],
+        template:"<p>{{todo.name}}</p>"
+    });
+var vm=new Vue({
+        el:"#app",
+        data:{
+            productList:[],
+            allData:false,
+            allMoney:0
+        },
+        filters:{
+            forMoney:function(value){
+                return "￥"+value+".00";
+            }
+        },
+        mounted:function(){
+            this.$nextTick(function(){
+                vm.jsView();
+            });
+        },
+        methods:{
+            jsView:function(){
+                var _this=this;
+                this.$http.get("package.json",{"id":123}).then(function(res){
+                    _this.productList=res.body.some;
+                })
+            },
+            change:function(value,way){
+                if(way<0){
+                    value.nub--;
+                    if(value.nub<1){
+                        value.nub=1;
+                    }
+                }else{
+                    value.nub++
+                }
+                this.allmoney();
+            },
+            dianjiCheck:function(item){
+                if(item.isCheck==null||item.isCheck==undefined||item.isCheck==0){
+                    this.$set(item,"isCheck",true);
+                }else{
+                    item.isCheck=!item.isCheck;
+                }
+            },
+            quanxuan:function(){
+                this.allData=!this.allData;
+                console.log(this.allData);
+                var _this=this;
+                this.productList.forEach(function(item,index){
+                    if(item.isCheck==null||item.isCheck==undefined||item.isCheck==0){
+                        _this.$set(item,"isCheck",_this.allData);
+                    }else{
+                        item.isCheck=_this.allData;
+                    }
+                });
+                this.allmoney();
+            },
+            allmoney:function(){
+                var _this=this;
+                _this.allMoney=0;
+                this.productList.forEach(function(item,index){
+                    if(item.isCheck){
+                        _this.allMoney+=item.nub*item.price;
+                    }
+                })
+            }
+        }
+    });
+    Vue.filter("money",function(value,type){
+        return "￥"+value+".00"+type
+    });
+</script>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>demo1</title>
+    <link rel="stylesheet" href="css/css.css"/>
+</head>
+<body>
+<div id="app">
+    <div class="div_1">
+        <p class="p_1">
+            <span class="title">Name:</span>
+            <input type="text" v-model="newperson.name"/>
+        </p>
+        <p class="p_1">
+            <span class="title">Age:</span>
+            <input type="text" v-model="newperson.age"/>
+        </p>
+        <p class="p_2">
+            <span class="title">Sex:</span>
+            <select v-model="newperson.Sex">
+                <option value="man">man</option>
+                <option value="women">women</option>
+            </select>
+        </p>
+        <p>
+            <span class="title"></span>
+            <span class="btn" v-on:click="addTo">add</span>
+        </p>
+    </div>
+    <ul>
+        <li>
+            <span>name</span>
+            <span>age</span>
+            <span>Sex</span>
+            <span>delate</span>
+        </li>
+        <li v-for="(item,index) in allArry">
+            <span>{{item.name}}</span>
+            <span>{{item.age}}</span>
+            <span>{{item.Sex}}</span>
+            <span v-on:click="deletePerson(index)">删除</span>
+        </li>
+    </ul>
+</div>
+<script src="js/vue.js"></script>
+<script>
+    var vm=new Vue({
+        el:"#app",
+        data:{
+            message:"this is my vue.js",
+            newperson:{
+                name:"",
+                age:"0",
+                Sex:"women"
+            },
+            allArry:[
+                {
+                    name:"aixi",
+                    age:"16",
+                    Sex:"man"
+                },
+                {
+                    name:"anlun",
+                    age:"36",
+                    Sex:"women"
+                },
+                {
+                    name:"lunk",
+                    age:"14",
+                    Sex:"man"
+                },
+                {
+                    name:"devi",
+                    age:"26",
+                    Sex:"man"
+                }
+            ]
+        },
+        methods:{
+            addTo:function(){
+                this.allArry.push(this.newperson);
+                this.newperson={name:"", age:"0", Sex:"women"}
+            },
+            deletePerson: function(index){
+                // 删一个数组元素；
+                console.log(index);
+                this.allArry.splice(index,1);
+            }
+        }
+    });
+</script>
+</body>
+</html>

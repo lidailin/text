@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8"/>
+    <title>组件</title>
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li>
+            <span style="display: inline-block;width: 150px;">name</span>
+            <span style="display: inline-block;width: 150px;">height</span>
+        </li>
+        <li>
+            <span style="display: inline-block;width: 150px;">{{name}}</span>
+            <span style="display: inline-block;width: 150px;">{{height}}</span>
+        </li>
+    </ul>
+    <component_1 v-bind:my-name.sync="name" v-bind:my-height.sync="height"></component_1>
+</div>
+<template id="template_1">
+    <ul>
+        <li>
+            <span style="display: inline-block;width: 150px;">name</span>
+            <span style="display: inline-block;width: 150px;">height</span>
+            <input type="text" v-model="myName"/>
+        </li>
+        <li>
+            <span style="display: inline-block;width: 150px;">{{myName}}</span>
+            <span style="display: inline-block;width: 150px;">{{myHeight}}</span>
+            <input type="text" v-model="myHeight"/>
+        </li>
+    </ul>
+</template>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    var vm=new Vue({
+        el:"#app",
+        data:{
+            name:"luck",
+            height:"156"
+        },
+        components:{"component_1":{
+            template:"#template_1",
+            props:["myName","myHeight"]
+        }}
+    })
+</script>
+</html>
